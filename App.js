@@ -1,9 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 
-// Test from Eric
-// my local change
-// heyhey 123
+
 export default function App() {
   return (
     <View style={styles.container}>
@@ -12,9 +10,8 @@ export default function App() {
     </View>
   );
 }
-// Test from Weng
-// Test from Shiuan
-// Test from Jenn
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
