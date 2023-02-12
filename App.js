@@ -1,25 +1,40 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import home from './screen/home';
+import { Provider } from 'react-redux';
+import { Store } from './redux/store';
+import { useFonts } from 'expo-font';
+import AppLoading from 'expo-app-loading';
+
+const Stack = createStackNavigator(); 
 
 
-export default function App() {
+
+function App() {
+  
+  let [fontsLoaded] = useFonts({
+    'ImprimaRegular': require('./assets/fonts/Imprima-Regular.ttf'),
+    'IMFellGreatPrimerItalic': require('./assets/fonts/IMFellGreatPrimer-Italic.ttf'),
+  });
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
+
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+     <Provider store={Store}>
+      <NavigationContainer>
+        <Stack.Navigator> 
+          <Stack.Screen
+            name="home"
+            component={home}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
+  )
 }
 
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
-
-
-//ohmygod
+export default App;
