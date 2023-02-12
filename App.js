@@ -12,6 +12,7 @@ export default function App() {
     </View>
   );
 }
+// Test from Weng
 // Test from Shiuan
 // Test from Jenn
 const styles = StyleSheet.create({
