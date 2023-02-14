@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar'
 import React, { useState } from 'react';
 import GlobalStyle from '../utils/GlobalStyle';
 
@@ -39,6 +38,16 @@ const Home = ({navigation}) => {
       null
       }
 
+      {submitted ?
+      <Button
+        title='view MRT route map'
+        onPress={() => navigation.navigate('MRT') }
+        
+      />
+      :
+      null
+      }
+
     </View>
   );
 }
@@ -47,7 +56,7 @@ const Home = ({navigation}) => {
 const Test = (props) => {
   return(
     <View>
-      <Text style={[GlobalStyle.CustomFont]} > Welcome to Bin Journey. You are reistered as {props.name}! </Text>
+      <Text style={[GlobalStyle.CustomFont]} > Welcome to MRT for Foodies You are reistered as {props.name}! </Text>
     </View>
   );
 } 

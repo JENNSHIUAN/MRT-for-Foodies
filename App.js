@@ -2,13 +2,13 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import home from './screen/home';
+import MRT from './screen/MRT';
 import { Provider } from 'react-redux';
 import { Store } from './redux/store';
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
 
 const Stack = createStackNavigator(); 
-
 
 
 function App() {
@@ -30,6 +30,11 @@ function App() {
             name="home"
             component={home}
           />
+          <Stack.Screen
+            name="MRT"
+            component={MRT}
+          />
+
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
