@@ -2,6 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import home from './screen/home';
+import MeloMRT from './screen/MeloMRT';
 import wengMRT from './screen/wengMRT';
 import MRT from './screen/MRT';
 import TestView from './screen/TestView';
@@ -39,6 +40,10 @@ function App() {
           <Stack.Screen
             name="wengMRT"
             component={wengMRT}
+          />
+          <Stack.Screen
+            name="MeloMRT"
+            component={MeloMRT}
           />
 
         </Stack.Navigator>
