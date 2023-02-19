@@ -27,10 +27,6 @@ function App() {
       <NavigationContainer>
         <Stack.Navigator> 
           <Stack.Screen
-            name="home"
-            component={home}
-          />
-          <Stack.Screen
             name="MRT"
             component={MRT}
           />
