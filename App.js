@@ -2,6 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import home from './screen/home';
+import wengMRT from './screen/wengMRT';
 import MRT from './screen/MRT';
 import TestView from './screen/TestView';
 import { Provider } from 'react-redux';
@@ -34,6 +35,10 @@ function App() {
           <Stack.Screen
             name="MRT"
             component={MRT}
+          />
+          <Stack.Screen
+            name="wengMRT"
+            component={wengMRT}
           />
 
         </Stack.Navigator>

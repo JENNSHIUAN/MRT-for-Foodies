@@ -25,6 +25,10 @@ const Home = ({navigation}) => {
         title='Eirc MRT'
         onPress={() => navigation.navigate('MRT') }
       />
+      <Button 
+        title='Weng MRT'
+        onPress={() => navigation.navigate('wengMRT') }
+      />
     </View>
   );
 }
