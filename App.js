@@ -4,7 +4,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import home from './screen/home';
 import MeloMRT from './screen/MeloMRT';
 import wengMRT from './screen/wengMRT';
-import MRT from './screen/MRT';
+import EricMRT from './screen/EricMRT';
+import Gesturetest from './screen/GestureTest'
 import TestView from './screen/TestView';
 import { Provider } from 'react-redux';
 import { Store } from './redux/store';
@@ -35,7 +36,7 @@ function App() {
           />
           <Stack.Screen
             name="MRT"
-            component={MRT}
+            component={EricMRT}
           />
           <Stack.Screen
             name="wengMRT"
@@ -45,7 +46,10 @@ function App() {
             name="MeloMRT"
             component={MeloMRT}
           />
-
+          <Stack.Screen
+            name="GestureTest"
+            component={Gesturetest}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

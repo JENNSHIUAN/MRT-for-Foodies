@@ -33,6 +33,11 @@ const Home = ({navigation}) => {
         title='Melo MRT'
         onPress={() => navigation.navigate('MeloMRT') }
       />
+      <Button 
+        title='Gesture Test'
+        onPress={() => navigation.navigate('GestureTest') }
+      />
+      
     </View>
   );
 }
