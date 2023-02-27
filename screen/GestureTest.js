@@ -1,10 +1,7 @@
-import { Dimensions, StyleSheet, View, Animated } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import {
-    Gesture,
-    GestureDetector,
-    GestureHandlerRootView,
-  } from 'react-native-gesture-handler';
-import { useSharedValue } from 'react-native-reanimated';
+  GestureHandlerRootView,
+} from 'react-native-gesture-handler';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -12,27 +9,10 @@ const SIZE = 80;
 
 export default function App() {
 
-  const translateX = useSharedValue(0)
-  const translateY = useSharedValue(0)
-  
-  const gesture = Gesture.Pan().onUpdate((event) => {
-    translateX.value = event.translationX
-    translateY.value = event.translationY
-  })
-  
-  const rStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{ translateX: translateX.value }, { translateY: translateY.value }],
-    }
-  })
-
-
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <View style={styles.container}>
-        <GestureDetector gesture={gesture}>
-          <Animated.View style={[styles.circle, rStyle]} />
-        </GestureDetector>
+        <View style={styles.circle} />
       </View>
     </GestureHandlerRootView>
   );

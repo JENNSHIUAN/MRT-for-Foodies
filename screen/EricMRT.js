@@ -12,12 +12,24 @@ const EricMRT = () => {
 
   const scale = useRef(new Animated.Value(1)).current;
   const translateX = useRef(new Animated.Value(0)).current;
-  const translateY = useRef(new Animated.Value(0)).current;  
+  const translateY = useRef(new Animated.Value(0)).current;
+  const [startX, setStartX] = useState(0);
 
   const pinchRef = useRef();
   const panRef = useRef();
 
   const pan = useRef(new Animated.ValueXY()).current;
+  const panResponder = useRef(
+    PanResponder.create({
+      onMoveShouldSetPanResponder: () => true,
+      onPanResponderMove: Animated.event([null, {dx: pan.x, dy: pan.y}]),
+      onPanResponderRelease: () => {
+        pan.extractOffset();
+        console.log("offset", pan.extractOffset);
+        console.log(pan.y);
+      },
+    }),
+  ).current;
 
   const onPinchEvent = Animated.event(
     [{ nativeEvent: { scale } }],
@@ -30,14 +42,20 @@ const EricMRT = () => {
       translationY: translateY,
     }
   }],
-    { useNativeDriver: true, },
+    { useNativeDriver: true, 
+      listener: (event, gestureState) => {
+        console.log("event", event.nativeEvent.translateX);
+        console.log("gestuire", gestureState);
+      },
+      
+    },
     );
 
   const handlePinchStateChange = ({ nativeEvent }) => {
     if (nativeEvent.state === State.ACTIVE) {
       setPanEnabled(true);
     }
-
+    console.log("cord", translateX, translateY);
     const nScale = nativeEvent.scale;
     if (nativeEvent.state === State.END) {
       if (nScale < 1) {
@@ -59,22 +77,10 @@ const EricMRT = () => {
     }
   };
 
-  const handlePanStateChange = ({ nativeEvent }) => {
-    if (nativeEvent.state === State.ACTIVE) {
-      setPanEnabled(true);
-    }
-    if (nativeEvent.state === State.END) {
-        translateX.extractOffset();
-        translateY.extractOffset();
-        console.log("pan end");
-      }
-  }
-
   return ( 
     <View>
       <PanGestureHandler
               onGestureEvent={onPanEvent}
-              onHandlerStateChange={handlePanStateChange}
               ref={panRef}
               simultaneousHandlers={[pinchRef]}
               enabled={panEnabled}
@@ -92,9 +98,9 @@ const EricMRT = () => {
                     style={{
                       width: '100%',
                       height: '100%',
-                      transform: [{ scale }, { translateX}, { translateY }],
+                      transform: [{ scale }, { translateX: pan.x }, { translateY: pan.y }],
                     }}
-                    // {...panResponder.panHandlers}
+                    {...panResponder.panHandlers}
                   >
 
                       <Svg width ="200%" height="200%">
