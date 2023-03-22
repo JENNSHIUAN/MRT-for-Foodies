@@ -1,40 +1,26 @@
-import { Dimensions, StyleSheet, View, Animated } from 'react-native';
-import {
-    Gesture,
-    GestureDetector,
-    GestureHandlerRootView,
-  } from 'react-native-gesture-handler';
-//import { useSharedValue } from 'react-native-reanimated';
+import { StyleSheet, View, Image, Dimensions, ScrollView } from 'react-native';
+const { width, height } = Dimensions.get("window");
+const CARD_HEIGHT = height / 4; 
+const CARD_WIDTH = CARD_HEIGHT- 50 ; 
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
-
-const SIZE = 80;
+const images = [
+  require('../assets/food.png'),
+  require('../assets/food.png'),
+  require('../assets/food.png'),
+  require('../assets/food.png'),
+  require('../assets/food.png'),
+];
 
 export default function App() {
-
-  const translateX = useSharedValue(0)
-  const translateY = useSharedValue(0)
-  
-  const gesture = Gesture.Pan().onUpdate((event) => {
-    translateX.value = event.translationX
-    translateY.value = event.translationY
-  })
-  
-  const rStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{ translateX: translateX.value }, { translateY: translateY.value }],
-    }
-  })
-
-
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <GestureDetector gesture={gesture}>
-          <Animated.View style={[styles.circle, rStyle]} />
-        </GestureDetector>
-      </View>
-    </GestureHandlerRootView>
+    <ScrollView style={styles.scrollView} 
+    horizontal
+    showsHorizontalScrollIndicator={false}
+    snapToInterval={CARD_WIDTH}>
+      {images.map((image, index) => (
+        <Image key={index} source={image} style={styles.test} />
+      ))}
+    </ScrollView>
   );
 }
 
@@ -43,12 +29,36 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  circle: {
-    position: 'absolute',
-    height: SIZE,
-    aspectRatio: 1,
-    backgroundColor: 'blue',
-    borderRadius: SIZE / 2,
-    opacity: 0.8,
+
+  test: {
+    width: 200,
+    height: 200,
+    marginRight: 10,
+  },
+  card: {
+    padding: 10,
+    elevation: 2,
+    backgroundColor: "#FFF",
+    marginHorizontal: 10,
+    shadowColor: "#000",
+    shadowRadius: 5,
+    shadowOpacity: 0.3,
+    shadowOffset: { x: 2, y: -2 },
+    height: CARD_HEIGHT,
+    width: CARD_WIDTH,
+    overflow: "hidden",
+  },
+  cardImage: {
+    flex: 3,
+    width: "100%",
+    height: "100%",
+    alignSelf: "center",
+  },
+  scrollView: {
+    marginHorizontal:  20,
+    position: "absolute",
+    bottom: 5,
+    left: 0,
+    right: 0,
   },
 });

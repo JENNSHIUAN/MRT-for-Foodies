@@ -1,34 +1,25 @@
 import React, { useState, useRef}from 'react';
-import { StyleSheet, View, Animated, Text } from 'react-native';
+import { StyleSheet, View, Animated, Text, Dimensions, Image, TouchableOpacity, ScrollView} from 'react-native';
 import Svg, { Path, Circle } from 'react-native-svg';
-import { PanGestureHandler, PinchGestureHandler, State } from 'react-native-gesture-handler';
+import { PanGestureHandler, PinchGestureHandler, State} from 'react-native-gesture-handler';
+
+const { width, height } = Dimensions.get("window");
+const CARD_HEIGHT = height / 4; 
+const CARD_WIDTH = CARD_HEIGHT- 50 ; 
 
 const wengMRT = () => {
-  const metroStations = [
-    { id: 1, name: 'Station A', x: 20, y: 20 },
-    { id: 2, name: 'Station B', x: 150, y: 50 },
-    { id: 3, name: 'Station C', x: 100, y: 100 },
-    { id: 4, name: 'Station D', x: 50, y: 150 },
-    { id: 5, name: 'Station E', x: 200, y: 200 },
-    { id: 6, name: 'Station F', x: 150, y: 250 },
-  ];
-
-  const metroLines = [
-    { id: 1, color: '#FF5733', stations: [1, 2] },
-    { id: 2, color: '#5BC0EB', stations: [2, 3] },
-    { id: 3, color: '#FF5733', stations: [3, 4] },
-    { id: 4, color: '#5BC0EB', stations: [4, 5] },
-    { id: 5, color: '#FF5733', stations: [5, 6] },
-  ];
+  const {metroStations, metroLines} = require('./MRTData');
  
   const [panEnabled, setPanEnabled] = useState(false);
+  const [showCard, setShowCard] = useState(false);
 
   const scale = useRef(new Animated.Value(1)).current;
   const translateX = useRef(new Animated.Value(0)).current;
-  const translateY = useRef(new Animated.Value(0)).current;
+  const translateY = useRef(new Animated.Value(0)).current;  
 
   const pinchRef = useRef();
   const panRef = useRef();
+
 
   const onPinchEvent = Animated.event(
     [{ nativeEvent: { scale } }],
@@ -38,10 +29,11 @@ const wengMRT = () => {
   const onPanEvent = Animated.event([{
     nativeEvent: {
       translationX: translateX,
-      translationY: translateY
+      translationY: translateY,
     }
   }],
-    { useNativeDriver: true });
+    { useNativeDriver: true, },
+    );
 
   const handlePinchStateChange = ({ nativeEvent }) => {
     if (nativeEvent.state === State.ACTIVE) {
@@ -69,14 +61,44 @@ const wengMRT = () => {
     }
   };
 
+  const handlePanStateChange = ({ nativeEvent }) => {
+    if (nativeEvent.state === State.ACTIVE) {
+      setPanEnabled(true);
+    }
+    if (nativeEvent.state === State.END) {
+        translateX.extractOffset();
+        translateY.extractOffset();
+        console.log("pan end");
+      }
+  }
 
+  const images = [
+    require('../assets/food.png'),
+    require('../assets/food.png'),
+    require('../assets/food.png'),
+    require('../assets/food.png'),
+    require('../assets/food.png'),
+  ];
+
+  const renderCard = () => {
+    return (
+      <ScrollView style={styles.scrollView} 
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      snapToInterval={CARD_WIDTH}>
+      {images.map((image, index) => (
+        <Image key={index} source={image} style={styles.image} />
+      ))}
+    </ScrollView>
+
+    );
+  };
 
   return ( 
-
     <View>
-
       <PanGestureHandler
               onGestureEvent={onPanEvent}
+              onHandlerStateChange={handlePanStateChange}
               ref={panRef}
               simultaneousHandlers={[pinchRef]}
               enabled={panEnabled}
@@ -94,11 +116,11 @@ const wengMRT = () => {
                     style={{
                       width: '100%',
                       height: '100%',
-                      transform: [{ scale }, { translateX }, { translateY }],
+                      transform: [{ scale }, { translateX}, { translateY }],
                     }}
                   >
 
-                      <Svg width ="100%" height="100%">
+                      <Svg style={{width :"200%", height :"200%", zIndex: 0}}>
                       {metroLines.map(line => (
                         <Path
                           key={line.id}
@@ -114,7 +136,7 @@ const wengMRT = () => {
                           key={station.id}
                           cx={station.x}
                           cy={station.y}
-                          r={10}
+                          r={5}
                           stroke="#000000"
                           strokeWidth={3}
                           fill="#FFFFFF"
@@ -122,17 +144,50 @@ const wengMRT = () => {
                       ))}
                     </Svg>
                     
-
+                    {/* {metroStations.map(station => (
+                      <View key={station.id} 
+                        style={[styles.stationLabel, { left: station.x, top: station.y }]}>
+                        <TouchableOpacity
+                          onPress={() => {
+                            // <View style={styles.card}
+                              // <Image
+                              //   source={require('../assets/food.png')}
+                              //   style={styles.cardImage}
+                              //   resizeMode="cover"
+                              // />
+                            // </View>
+                          }}> 
+                            <Text style={style s.stationLabelText}>{station.name}</Text>
+                        </TouchableOpacity>
+                      </View>
+                    ))} */}
+                    
                     {metroStations.map(station => (
                       <View key={station.id} style={[styles.stationLabel, { left: station.x, top: station.y }]}>
-                        <Text style={styles.stationLabelText}>{station.name}</Text>
+                        <TouchableOpacity onPress={() => setShowCard(!showCard)}> 
+                          <Text style={styles.stationLabelText}>{station.name}</Text>
+                      </TouchableOpacity>
+
+                        {/* {showCard && (
+                          <View style={styles.card}>
+                            <Image
+                              source={require('../assets/food.png')}
+                              style={styles.cardImage}
+                              resizeMode="cover"
+                            />
+                          </View>
+                        )} */}
                       </View>
                     ))}
+    
+                  {showCard && renderCard()}
+                  
 
                   </Animated.View>
                 </PinchGestureHandler>
               </Animated.View>
             </PanGestureHandler>
+            
     </View>
   );
 };
@@ -143,6 +198,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#FFFFFF',
+    zIndex: 0
   },
   stationLabel: {
     position: 'absolute',
@@ -151,12 +207,46 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 2,
     borderColor: '#000000',
-    zIndex: 1,
+    zIndex: 0,
   },
   stationLabelText: {
   fontSize: 12,
   fontWeight: 'bold',
   textAlign: 'center',
+  zIndex: 0
+  },
+  circle: {
+    width: 100,
+    height: 100,
+    borderRadius: 100 / 2,
+    backgroundColor: "red",
+  },
+  card: {
+    width: 100,
+    height: 100,
+    top: 50,
+    left: 50,
+    position: 'absolute',
+    zIndex: 1
+  },
+  cardImage: {
+    flex: 3,
+    width: "100%",
+    height: "100%",
+    alignSelf: "center",
+  },
+  scrollView: {
+    marginHorizontal:  20,
+    position: "absolute",
+    bottom: 5,
+    left: 0,
+    right: 0,
+  },
+  image: {
+    width: 200,
+    height: 200,
+    marginRight: 10,
+    zIndex: 1
   },
   });
 
