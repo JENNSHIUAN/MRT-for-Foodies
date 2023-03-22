@@ -1,7 +1,7 @@
 import { StyleSheet, View, Image, Dimensions, ScrollView } from 'react-native';
 const { width, height } = Dimensions.get("window");
 const CARD_HEIGHT = height / 4; 
-const CARD_WIDTH = CARD_HEIGHT- 50 ; 
+const CARD_WIDTH = CARD_HEIGHT- 10 ; 
 
 const images = [
   require('../assets/food.png'),
@@ -18,8 +18,14 @@ export default function App() {
     showsHorizontalScrollIndicator={false}
     snapToInterval={CARD_WIDTH}>
       {images.map((image, index) => (
-        <Image key={index} source={image} style={styles.test} />
-      ))}
+        <View style={styles.card} key={index}>
+          <Image 
+            source={image} 
+            style={styles.cardImage}
+            resizeMode="cover"
+          />
+        </View>
+     ))}
     </ScrollView>
   );
 }
@@ -39,7 +45,8 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 2,
     backgroundColor: "#FFF",
-    marginHorizontal: 10,
+    borderRadius: 10,
+    marginHorizontal: 5,
     shadowColor: "#000",
     shadowRadius: 5,
     shadowOpacity: 0.3,
@@ -49,10 +56,9 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   cardImage: {
-    flex: 3,
-    width: "100%",
-    height: "100%",
-    alignSelf: "center",
+    width: 90,
+    height: 90,
+    alignSelf: "left",
   },
   scrollView: {
     marginHorizontal:  20,

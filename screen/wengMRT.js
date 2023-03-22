@@ -5,7 +5,7 @@ import { PanGestureHandler, PinchGestureHandler, State} from 'react-native-gestu
 
 const { width, height } = Dimensions.get("window");
 const CARD_HEIGHT = height / 4; 
-const CARD_WIDTH = CARD_HEIGHT- 50 ; 
+const CARD_WIDTH = CARD_HEIGHT- 10 ; 
 
 const wengMRT = () => {
   const {metroStations, metroLines} = require('./MRTData');
@@ -72,12 +72,12 @@ const wengMRT = () => {
       }
   }
 
-  const images = [
-    require('../assets/food.png'),
-    require('../assets/food.png'),
-    require('../assets/food.png'),
-    require('../assets/food.png'),
-    require('../assets/food.png'),
+  const database = [
+    [require('../assets/food.png'),"熟成咖哩"],
+    [require('../assets/food.png'),"稻町家香料咖哩"],
+    [require('../assets/food.png'),"銀兔湯咖哩中山店"],
+    [require('../assets/food.png'),"熟成咖哩"],
+    [require('../assets/food.png'),"熟成咖哩"],
   ];
 
   const renderCard = () => {
@@ -86,8 +86,17 @@ const wengMRT = () => {
       horizontal
       showsHorizontalScrollIndicator={false}
       snapToInterval={CARD_WIDTH}>
-      {images.map((image, index) => (
-        <Image key={index} source={image} style={styles.image} />
+      {database.map((data, index) => (
+        <View style={styles.card} key={index}>
+          <Image 
+            source={data[0]} 
+            style={styles.cardImage}
+            resizeMode="cover"
+          />
+          <View>
+                <Text style={styles.cardtitle}>{data[1]}</Text>
+          </View>
+        </View>
       ))}
     </ScrollView>
 
@@ -222,18 +231,29 @@ const styles = StyleSheet.create({
     backgroundColor: "red",
   },
   card: {
-    width: 100,
-    height: 100,
-    top: 50,
-    left: 50,
-    position: 'absolute',
+    padding: 10,
+    elevation: 2,
+    backgroundColor: "#FFF",
+    borderRadius: 10,
+    marginHorizontal: 5,
+    shadowColor: "#000",
+    shadowRadius: 5,
+    shadowOpacity: 0.3,
+    shadowOffset: { x: 2, y: -2 },
+    height: CARD_HEIGHT,
+    width: CARD_WIDTH,
+    overflow: "hidden",
     zIndex: 1
   },
   cardImage: {
-    flex: 3,
-    width: "100%",
-    height: "100%",
-    alignSelf: "center",
+    width: 100,
+    height: 100,
+    alignSelf: "left",
+  },
+  cardtitle: {
+    fontSize: 12,
+    marginTop: 5,
+    fontWeight: "bold",
   },
   scrollView: {
     marginHorizontal:  20,
